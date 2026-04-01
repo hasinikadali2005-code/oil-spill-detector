@@ -1,0 +1,8 @@
+C:\Users\hasin\OneDrive\Desktop\oil_spill_detection_model\spring-backend\src\main\java\com\oilspill\OilSpillApplication.java
+C:\Users\hasin\OneDrive\Desktop\oil_spill_detection_model\spring-backend\src\main\java\com\oilspill\service\OilSpillService.java
+C:\Users\hasin\OneDrive\Desktop\oil_spill_detection_model\spring-backend\src\main\java\com\oilspill\config\GlobalExceptionHandler.java
+C:\Users\hasin\OneDrive\Desktop\oil_spill_detection_model\spring-backend\src\main\java\com\oilspill\config\RestTemplateConfig.java
+C:\Users\hasin\OneDrive\Desktop\oil_spill_detection_model\spring-backend\src\main\java\com\oilspill\controller\OilSpillController.java
+C:\Users\hasin\OneDrive\Desktop\oil_spill_detection_model\spring-backend\src\main\java\com\oilspill\exception\ApiException.java
+C:\Users\hasin\OneDrive\Desktop\oil_spill_detection_model\spring-backend\src\main\java\com\oilspill\exception\FileUploadException.java
+C:\Users\hasin\OneDrive\Desktop\oil_spill_detection_model\spring-backend\src\main\java\com\oilspill\dto\PredictionResponse.java

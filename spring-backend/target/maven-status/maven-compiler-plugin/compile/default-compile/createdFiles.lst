@@ -1,0 +1,8 @@
+com\oilspill\config\RestTemplateConfig.class
+com\oilspill\service\OilSpillService.class
+com\oilspill\config\GlobalExceptionHandler.class
+com\oilspill\dto\PredictionResponse.class
+com\oilspill\controller\OilSpillController.class
+com\oilspill\exception\ApiException.class
+com\oilspill\exception\FileUploadException.class
+com\oilspill\OilSpillApplication.class
