@@ -1,43 +1,69 @@
 import os
+import cv2
+import numpy as np
 import base64
+from tensorflow.keras.models import load_model
 
 OIL_SPILL_DECISION_THRESHOLD_PERCENT = 50
-
-
-def image_to_base64(image_path):
-    with open(image_path, "rb") as f:
-        return base64.b64encode(f.read()).decode("utf-8")
-
 
 class Detector:
     def __init__(self):
         self.model_loaded = False
         self.model = None
-        print("Running in DEMO mode (no ML model)")
 
-    def predict(self, image_path):
         try:
-            # 🔥 Convert uploaded image to base64
-            img_base64 = image_to_base64(image_path)
+            model_path = "model/oil_spill_model.keras"
 
-            return {
-                "success": True,
-                "confidence": 82.3,
-                "has_oil_spill": True,
-                "status_text": "Oil Spill Detected",
-                "message": "Demo mode (model disabled for deployment)",
-
-                # 🔥 IMPORTANT (for UI)
-                "original_image": f"data:image/png;base64,{img_base64}",
-                "mask_image": f"data:image/png;base64,{img_base64}",
-                "overlay_image": f"data:image/png;base64,{img_base64}"  # dummy
-            }
+            if os.path.exists(model_path):
+                self.model = load_model(model_path)
+                self.model_loaded = True
+                print("✅ Model loaded successfully")
+            else:
+                print("❌ Model not found")
 
         except Exception as e:
-            return {
-                "success": False,
-                "error": str(e)
-            }
+            print("❌ Model loading error:", e)
 
+    def preprocess(self, image_path):
+        img = cv2.imread(image_path)
+        img = cv2.resize(img, (256, 256))
+        img = img / 255.0
+        return img
+
+    def predict(self, image_path):
+        if not self.model_loaded:
+            return {"error": "Model not loaded"}
+
+        img = self.preprocess(image_path)
+        input_img = np.expand_dims(img, axis=0)
+
+        pred = self.model.predict(input_img)[0]
+
+        # For segmentation models
+        mask = (pred > 0.5).astype(np.uint8) * 255
+
+        confidence = float(np.mean(pred) * 100)
+
+        has_oil_spill = confidence > OIL_SPILL_DECISION_THRESHOLD_PERCENT
+
+        # Convert images to base64
+        def encode_image(image):
+            _, buffer = cv2.imencode('.png', image)
+            return base64.b64encode(buffer).decode('utf-8')
+
+        original = (img * 255).astype(np.uint8)
+        mask_img = mask
+
+        overlay = original.copy()
+        overlay[mask_img > 0] = [0, 0, 255]  # red highlight
+
+        return {
+            "success": True,
+            "confidence": confidence,
+            "has_oil_spill": has_oil_spill,
+            "original_image": encode_image(original),
+            "mask_image": encode_image(mask_img),
+            "overlay_image": encode_image(overlay)
+        }
 
 detector = Detector()
