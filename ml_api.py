@@ -28,9 +28,9 @@ class Detector:
                 "message": "Demo mode (model disabled for deployment)",
 
                 # 🔥 IMPORTANT (for UI)
-                "original_image": img_base64,
-                "mask_image": img_base64,      # dummy
-                "overlay_image": img_base64    # dummy
+                "original_image": f"data:image/png;base64,{img_base64}",
+                "mask_image": f"data:image/png;base64,{img_base64}",
+                "overlay_image": f"data:image/png;base64,{img_base64}"  # dummy
             }
 
         except Exception as e:
